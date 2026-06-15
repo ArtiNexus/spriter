@@ -1,31 +1,23 @@
 <script lang="ts">
-  let actions = $state([
-    { name: "idle", prompt: "角色自然站立，轻微呼吸起伏，身体不移动", enabled: true },
-    { name: "listening", prompt: "角色微笑眨眼，头微微侧倾，表示在听", enabled: true },
-    { name: "thinking", prompt: "角色坐在电脑前快速打字，手指敲击键盘", enabled: true },
-    { name: "speaking", prompt: "角色嘴巴开合说话，头部轻微晃动", enabled: true },
-    { name: "error", prompt: "角色摇头，表达否定或出错了", enabled: true },
-  ]);
-  function add() { actions = [...actions, { name: "new", prompt: "", enabled: true }]; }
-  function remove(i: number) { actions = actions.filter((_, j) => j !== i); }
+  import { pipeline } from "../stores/pipeline.svelte";
 </script>
 
 <div class="actions">
   <h2>动作编辑</h2>
   <p class="hint">编辑每个动作的描述，禁用不需要的动作</p>
   <div class="list">
-    {#each actions as act, i}
+    {#each pipeline.actions as act, i}
       <div class="card" class:disabled={!act.enabled}>
         <div class="card-header">
           <input type="text" bind:value={act.name} placeholder="动作名" class="name-input" />
-          <label><input type="checkbox" bind:checked={act.enabled} /> 启用</label>
-          <button class="del" onclick={() => remove(i)}>✕</button>
+          <label><input type="checkbox" checked={act.enabled} onchange={() => pipeline.toggleAction(i)} /> 启用</label>
+          <button class="del" onclick={() => pipeline.removeAction(i)}>✕</button>
         </div>
         <textarea bind:value={act.prompt} placeholder="描述这个动作..." rows={2}></textarea>
       </div>
     {/each}
   </div>
-  <button onclick={add}>+ 添加动作</button>
+  <button onclick={() => pipeline.addAction()}>+ 添加动作</button>
 </div>
 
 <style>
