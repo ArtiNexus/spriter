@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicedoc/tauri/dev/crates/tauri-config-schema/schema.json",
+  "productName": "Sprite Maker",
+  "version": "0.1.0",
+  "identifier": "com.spriter.app",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [{
+      "label": "main",
+      "width": 800, "height": 600,
+      "resizable": true
+    }],
+    "security": { "csp": null }
+  },
+  "plugins": {
+    "dialog": {}, "fs": { "scope": ["**"] }, "store": {}
+  }
+}
